@@ -117,28 +117,29 @@ class _CodeFieldsState extends State<CodeFields> {
 
   @override
   void dispose() {
-    controllers.forEach((TextEditingController controller) => controller.dispose());
+    controllers
+        .forEach((TextEditingController controller) => controller.dispose());
 
     super.dispose();
   }
 
-  void clearCode(){
+  void clearCode() {
     controllers[0].text = "";
     for (int i = 1; i < widget.length; i++) {
       controllers[i].text = whitespaceCharacter;
     }
   }
-  
-  void setCode(int code){
+
+  void setCode(int code) {
     String stringCode = code.toString();
-    if(stringCode.length == widget.length){
+    if (stringCode.length == widget.length) {
       controllers[0].text = stringCode[0];
       for (int i = 1; i < widget.length; i++) {
         controllers[i].text = whitespaceCharacter + stringCode[i];
       }
-    }else{
+    } else {
       print("[CodeFields] The length of the code must be ${widget.length}.");
-    }                                                                                                                                                                                                                                       
+    }
   }
 
   String getCode() {
@@ -223,7 +224,8 @@ class _CodeFieldsState extends State<CodeFields> {
 
             String code = getCode();
             widget.onChanged!(code);
-            if (code.length == widget.length) widget.onCompleted!(code);
+            if (code.length == widget.length && widget.onCompleted != null)
+              widget.onCompleted!(code);
           },
           validator: (String? code) {
             String? error = widget.validator!.call(getCode());
